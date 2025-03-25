@@ -14,6 +14,7 @@ const Display = () => {
 
     return (
         <div>
+            <p>Display</p>
             {
                 logs.length > 0 ? (
                     <ul>
