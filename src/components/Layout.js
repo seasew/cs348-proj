@@ -3,6 +3,7 @@ import { Outlet, NavLink } from 'react-router-dom';
 const Layout = () => {
     return (
         <div>
+            <h1>Mood Tracker</h1>
             <nav>
                 <ul>
                     <li>
@@ -10,6 +11,9 @@ const Layout = () => {
                     </li>
                     <li>
                         <NavLink to="/display">Display Logs</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/display-mood">Display Moods</NavLink>
                     </li>
                     <li>
                         <NavLink to="/report">Generate Report</NavLink>
