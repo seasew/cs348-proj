@@ -2,7 +2,7 @@ import { Outlet, NavLink } from 'react-router-dom';
 
 const Layout = () => {
     return (
-        <div>
+        <div style={{ padding: '20px', paddingLeft: '50px' }}>
             <h1>Mood Tracker</h1>
             <nav>
                 <ul>

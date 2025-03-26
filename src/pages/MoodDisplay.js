@@ -47,7 +47,7 @@ const MoodDisplay = () => {
     return (
         <div>
             <h2>Mood Display</h2>
-            <form onSubmit={handleSubmit} >
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
                 <label htmlFor="date">Title:</label>
                 <input type="text" id="date" name="title" onChange={handleChange} />
                 <br />
@@ -60,7 +60,7 @@ const MoodDisplay = () => {
                 moods.length > 0 ? (
                     <ul>
                         {moods.map((mood, index) => (
-                            <li key={index} style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
+                            <li key={index} style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px" }}>
                                 <p>{mood.id}</p>
                                 <p>{mood.title}</p>
                                 <p style={{ fontSize: "40px", margin: "0px", color: mood.hex_code }}>&#9679;</p>

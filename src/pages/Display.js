@@ -76,9 +76,10 @@ const Display = () => {
                 <br />
                 <button type="submit">+ Insert new entry</button>
             </form>
+            <br />
             {
                 logs.length > 0 ? (
-                    <table style={{ border: "1px solid" }}>
+                    <table style={{ border: "1px solid", width:"100%" }}>
                         <thead>
                             <tr>
                                 <th style={{ border: "1px solid" }}>ID</th>
