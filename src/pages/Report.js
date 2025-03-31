@@ -45,7 +45,7 @@ const Report = () => {
         <div>
             <h2>Report Page</h2>
             <p>Select an inclusive date range.</p>
-            <p>The report will display all matching logs, the majority mood over that date range, number of logs made, longest daily streak, and an average of all colors.</p>
+            <p>The report will display all matching logs, the majority mood over that date range, number of logs made, and the average mood color.</p>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
                 <label htmlFor="from_date">From (mm/dd/yyyy):</label>
                 <input type="text" id="from_date" name="from_date" defaultValue={"01/01/2025"} onChange={handleChange} />

@@ -47,7 +47,7 @@ def get_all_logs():
 	session = SessionLocal()
 
 	# Query all logs and moods from the database
-	logs = session.query(Log).all()
+	logs = session.query(Log).order_by(Log.date.asc()).all()
 	moods = session.query(Mood).all()
 
 	print(logs)
@@ -99,11 +99,18 @@ def filter_logs():
 	date_format = "%m/%d/%Y"
 	from_date_object = datetime.strptime(data["from_date"], date_format)
 	to_date_object = datetime.strptime(data["to_date"], date_format)
+	new_date_format = "%Y-%m-%d"
+	from_date_str = from_date_object.strftime(new_date_format)
+	to_date_str = to_date_object.strftime(new_date_format)
 
 	# Retrieve the logs within the specified date range (inclusive)
-	logs = session.query(Log).filter(Log.date >= from_date_object, Log.date <= to_date_object).all()
+	logs = session.query(Log).filter(Log.date.between(from_date_str, to_date_str)).order_by(Log.date.asc()).all()
 	
 	session.close()
+
+	# If no logs were found, return an empty response
+	if len(logs) == 0:
+		return jsonify({"logs": [], "majority_mood": [], "average_color": "#000000"})
 
 	# Convert the date object to string format; add mood title and hex code
 	for log in logs:
