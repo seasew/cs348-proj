@@ -16,5 +16,3 @@ def retrieve_tbl1():
 			out += row[0] + ", " + str(row[1]) + ", "
 		
 	return out
-
-

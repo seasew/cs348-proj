@@ -3,6 +3,7 @@
 from flask import Flask, request, jsonify
 from models import SessionLocal, Log, Mood, init_db
 from datetime import datetime
+from sqlalchemy import text
 
 # Initialize database
 init_db()
@@ -73,7 +74,7 @@ def get_all_logs():
 		"mood_id": log.mood_id, "mood": log.mood,
 		"mood_hex_code": log.mood_hex_code, "note": log.note} for log in logs])
 
-# Route to add a new log
+# Route to add a new log (using prepared statements)
 @app.route("/api/insert-log", methods=["POST"])
 def add_log():
 	data = request.json
@@ -81,15 +82,56 @@ def add_log():
 
 	# Convert date string to datetime object
 	date_format = "%m/%d/%Y"
-	date_object = datetime.strptime(data["date"], date_format)
+	date_object = datetime.strptime(data["date"], date_format).date() # Keep only the date part
 
-	new_log = Log(date=date_object, mood_id=data["mood_id"], note=data["note"])
-	session.add(new_log)
+	session.execute(text("INSERT INTO log (date, mood_id, note) VALUES (:date, :mood_id, :note)"), 
+			{
+				"date": date_object,
+				"mood_id": data["mood_id"],
+				"note": data["note"],
+			})
 	session.commit()
 	session.close()
+	print("Successfully inserted new log using prepared statements")
 	return jsonify({"message": "Log added successfully"}), 201
 
-# Route to generate a report over a date range
+# Route to update a log
+@app.route("/api/update-log/<int:log_id>", methods=["PUT"])
+def update_log(log_id):
+	data = request.json
+	session = SessionLocal()
+
+	# Retrieve the log we want to update
+	log = session.query(Log).filter(Log.id == log_id).first()
+	if not log:
+		return jsonify({"error": "Log with given id not found"}), 404
+	
+	# Convert date string to datetime object
+	date_format = "%m-%d-%Y"
+	
+	# Update the log object with the new values
+	log.date = datetime.strptime(data.get("date", log.date), date_format).date() 		# If the key doesn't exist, use a default value instead
+	log.mood_id = data.get("mood_id", log.mood_id)
+	log.note = data.get("note", log.note)
+
+	session.commit()
+	session.close()
+	return jsonify({"message": "Log updated successfully"})
+
+
+# Route to delete a log
+@app.route("/api/delete-log/<int:log_id>", methods=["DELETE"])
+def delete_log(log_id):
+	session = SessionLocal()
+	log = session.query(Log).filter(Log.id == log_id).first()
+	if not log:
+		return jsonify({"error": "Log not found"}), 404
+	session.delete(log)
+	session.commit()
+	session.close()
+	return jsonify({"message": "Log deleted successfully"})
+
+# Route to generate a report over a date range (using ORM)
 @app.route("/api/report", methods=["POST"])
 def filter_logs():
 	data = request.json
@@ -157,41 +199,4 @@ def filter_logs():
 		"majority_mood": [{"id": mood.id, "title": mood.title, "hex_code": mood.hex_code} for mood in most_common_moods],
 		"average_color": average_color_hex,
 	})
-
-# Below is todo
-# Route to update a task
-@app.route("/tasks/<int:task_id>", methods=["PUT"])
-def update_task(task_id):
-	data = request.json
-	session = SessionLocal()
-	task = session.query(Task).filter(Task.id == task_id).first()
-	if not task:
-		return jsonify({"error": "Task not found"}), 404
-	task.title = data.get("title", task.title)
-	task.completed = data.get("completed", task.completed)
-	session.commit()
-	session.close()
-	return jsonify({"message": "Task updated successfully"})
-
-# Route to delete a task
-@app.route("/tasks/<int:task_id>", methods=["DELETE"])
-def delete_task(task_id):
-	session = SessionLocal()
-	task = session.query(Task).filter(Task.id == task_id).first()
-	if not task:
-		return jsonify({"error": "Task not found"}), 404
-	session.delete(task)
-	session.commit()
-	session.close()
-	return jsonify({"message": "Task deleted successfully"})
-
-
-@app.route("/api/hello_world")
-def hello_world():
-	return jsonify({"content": "Hello, world!"})
-
-@app.route("/api/db_hello_world")
-def db_hello_world():
-	result = retrieve_tbl1()
-	return jsonify({"content": result})
 
