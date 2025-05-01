@@ -3,9 +3,11 @@
 
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, Date, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker
+import os
 
 # Initialize database connection
-DATABASE_URL = "sqlite+pysqlite:///tracker.db"  
+LOCAL_DATABASE_URL = "sqlite+pysqlite:///tracker.db"  
+DATABASE_URL = os.getenv("DATABASE_URL", LOCAL_DATABASE_URL)
 engine = create_engine(DATABASE_URL, echo=True)
 
 # Define the base class for models
