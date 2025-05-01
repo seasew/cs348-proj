@@ -36,7 +36,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://127.0.0.1:5000/",
+  "proxy": "https://cs348-proj.onrender.com",
   "devDependencies": {
     "@testing-library/react": "^16.2.0"
   }
