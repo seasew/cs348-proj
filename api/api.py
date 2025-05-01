@@ -8,6 +8,14 @@ from sqlalchemy import text
 # Initialize database
 init_db()
 
+# Create index for the log table
+# This is a one-time operation to ensure the log table has an index on the date column
+
+session = SessionLocal()
+session.execute(text("CREATE INDEX IF NOT EXISTS idx_log_date ON log (date)"))
+session.commit()
+session.close()
+
 # Create Flask instance which acts as our backend server
 app = Flask(__name__)
 
