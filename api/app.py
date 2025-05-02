@@ -73,10 +73,10 @@ def get_all_logs():
 		log.mood = "invalid"
 		log.mood_hex_code = "#000000"  # Default hex code if mood is invalid
 		
-		the_mood = session.execute(text("SELECT * FROM mood WHERE id=:mood_id LIMIT 1"),
+		the_mood = session.execute(text("SELECT * FROM mood WHERE id=:mood_id"),
 			{
 				"mood_id": log.mood_id
-			})
+			}).first()
 		if the_mood:
 			log.mood = the_mood.title
 			log.mood_hex_code = the_mood.hex_code
