@@ -48,6 +48,7 @@ const MoodDisplay = () => {
     return (
         <div>
             <h2>Mood Display</h2>
+            <p>This is intended for developer use.</p>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
                 <label htmlFor="date">Title:</label>
                 <input type="text" id="date" name="title" onChange={handleChange} />
