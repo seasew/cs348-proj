@@ -2,3 +2,4 @@ flask==3.0.3
 sqlalchemy==2.0.34
 psycopg2
 gunicorn
+flask_cors

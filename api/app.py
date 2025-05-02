@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify
 from models import SessionLocal, Log, Mood, init_db
 from datetime import datetime
 from sqlalchemy import text
+from flask_cors import CORS
 
 # Initialize database
 init_db()
@@ -18,6 +19,7 @@ session.close()
 
 # Create Flask instance which acts as our backend server
 app = Flask(__name__)
+CORS(app)
 
 # Define routes for the API
 
