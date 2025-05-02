@@ -29,7 +29,7 @@ def get_moods():
 	session = SessionLocal()
 
 	# Query all moods from the database
-	moods = session.execute("SELECT * FROM mood")
+	moods = session.execute(text("SELECT * FROM mood"))
 	session.close()
 
 	print("moods", moods)
@@ -59,7 +59,7 @@ def get_all_logs():
 
 	# Query all logs and moods from the database
 	logs = session.query(Log).order_by(Log.date.asc()).all()
-	moods = session.execute("SELECT * FROM mood")
+	moods = session.execute(text("SELECT * FROM mood"))
 
 	print(logs)
 	print(moods)
