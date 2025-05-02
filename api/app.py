@@ -29,7 +29,7 @@ def get_moods():
 	session = SessionLocal()
 
 	# Query all moods from the database
-	moods = session.query(Mood).all()
+	moods = session.execute("SELECT * FROM mood")
 	session.close()
 
 	print("moods", moods)
@@ -59,7 +59,7 @@ def get_all_logs():
 
 	# Query all logs and moods from the database
 	logs = session.query(Log).order_by(Log.date.asc()).all()
-	moods = session.query(Mood).all()
+	moods = session.execute("SELECT * FROM mood")
 
 	print(logs)
 	print(moods)
@@ -73,7 +73,10 @@ def get_all_logs():
 		log.mood = "invalid"
 		log.mood_hex_code = "#000000"  # Default hex code if mood is invalid
 		
-		the_mood = session.query(Mood).filter(Mood.id == log.mood_id).first()
+		the_mood = session.execute(text("SELECT * FROM mood WHERE id=:mood_id LIMIT 1"),
+			{
+				"mood_id": log.mood_id
+			})
 		if the_mood:
 			log.mood = the_mood.title
 			log.mood_hex_code = the_mood.hex_code
