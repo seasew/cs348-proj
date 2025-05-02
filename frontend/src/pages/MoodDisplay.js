@@ -25,6 +25,7 @@ const MoodDisplay = () => {
         e.preventDefault();
 
         try {
+            console.log("Form Data:", formData); // Log the form data to check its structure
             const response = await fetch(`${process.env.REACT_APP_PROXY}/api/insert-mood`, {
                 method: 'POST',
                 headers: {

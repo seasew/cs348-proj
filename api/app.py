@@ -43,6 +43,8 @@ def insert_mood():
 	data = request.json
 	session = SessionLocal()
 
+	console.log("data", data)
+
 	# Create a new Mood object and add it to the session
 	new_mood = Mood(title=data["title"], hex_code=data["hex_code"])
 	session.add(new_mood)
