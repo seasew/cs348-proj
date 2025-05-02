@@ -18,7 +18,7 @@ const Report = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch('/api/report', {
+            const response = await fetch(`${process.env.REACT_APP_PROXY}/api/report`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

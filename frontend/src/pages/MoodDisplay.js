@@ -7,7 +7,7 @@ const MoodDisplay = () => {
     const [moods, setMoods] = useState([]);
 
     useEffect(() => {
-        fetch('/api/moods')
+        fetch(`${process.env.REACT_APP_PROXY}/api/moods`)
             .then(response => response.json())
             .then(data => setMoods(data));
     }, [setMoods]);
@@ -25,7 +25,7 @@ const MoodDisplay = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch('/api/insert-mood', {
+            const response = await fetch(`${process.env.REACT_APP_PROXY}/api/insert-mood`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

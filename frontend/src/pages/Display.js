@@ -15,7 +15,7 @@ const Display = () => {
     }, [setLogs, refreshLogs]);
 
     const fetchLogs = async () => {
-        fetch('/api/logs')
+        fetch(`${process.env.REACT_APP_PROXY}/api/logs`)
             .then(response => response.json())
             .then(data => {
                 setLogs(data.map(log => ({ ...log, isEditing: false, editFormData: { date: log.date, mood_id: log.mood_id, note: log.note } })));
@@ -24,7 +24,7 @@ const Display = () => {
 
     // Fetch moods
     useEffect(() => {
-        fetch('/api/moods')
+        fetch(`${process.env.REACT_APP_PROXY}/api/moods`)
             .then(response => response.json())
             .then(data => setMoods(data));
     }, [setMoods]);
@@ -47,7 +47,7 @@ const Display = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch('/api/insert-log', {
+            const response = await fetch(`${process.env.REACT_APP_PROXY}/api/insert-log`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ const Display = () => {
             let editedLogData = logs.find((log) => log.id === logId).editFormData;
             console.log(editedLogData);
 
-            const response = await fetch(`/api/update-log/${logId}`, {
+            const response = await fetch(`${process.env.REACT_APP_PROXY}/api/update-log/${logId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ const Display = () => {
 
     const handleDelete = async (logId) => {
         try {
-            const response = await fetch(`/api/delete-log/${logId}`, {
+            const response = await fetch(`${process.env.REACT_APP_PROXY}/api/delete-log/${logId}`, {
                 method: 'DELETE',
             });
 
